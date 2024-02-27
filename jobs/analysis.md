@@ -1,0 +1,22 @@
+- Job :
+    - user
+    - title
+    - description
+    - email
+    - address
+    - job type (parttime, fulltime, internship, contract)
+    - education (phd, master ,bachelor)
+    - industry (it, bussines, video editing)
+    - experience ('NoExperience', 'Junior', 'MidLevel', 'MidSenior')
+    - salary
+    - company
+    - position
+    - duedate
+    - created_at
+
+- JobApply :
+    - job
+    - user
+    - resume
+    - applied_at
+    - cover letter
