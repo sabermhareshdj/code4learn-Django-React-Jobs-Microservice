@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.utils.text import slugify
 
 
 
@@ -37,9 +38,15 @@ class Job(models.Model):
   user = models.IntegerField()
   email = models.EmailField()
   company = models.CharField(max_length=30)
+  slug = models.SlugField(null=True,blank=True)
 
   def __str__(self):
     return self.title
+
+  def save(self,*args, **kwargs):
+    self.slug = slugify(self.title)
+    super(Job, self).save(*args, **kwargs)
+  
 
 
 class JobApply(models.Model):
