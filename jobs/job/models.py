@@ -43,10 +43,10 @@ class Job(models.Model):
   def __str__(self):
     return self.title
 
-  def save(self,*args, **kwargs):
-    self.slug = slugify(self.title)
-    super(Job, self).save(*args, **kwargs)
-  
+
+  def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        super(Job, self).save(*args, **kwargs)
 
 
 class JobApply(models.Model):
