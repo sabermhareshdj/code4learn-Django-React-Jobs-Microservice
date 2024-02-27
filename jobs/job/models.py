@@ -41,6 +41,7 @@ class Job(models.Model):
   def __str__(self):
     return self.title
 
+
 class JobApply(models.Model):
   user = models.IntegerField()
   job = models.ForeignKey(Job,related_name='applied_job',on_delete=models.CASCADE)
@@ -48,5 +49,7 @@ class JobApply(models.Model):
   cover_letter = models.TextField(max_length=500)
   applied_at = models.DateTimeField(default=timezone.now)
 
+  def __str__(self):
+    return str(self.job)
 
 
