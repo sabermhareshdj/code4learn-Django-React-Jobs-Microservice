@@ -1,5 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager , PermissionsMixin
+from django.contrib.auth.hashers import make_password
+from django.contrib.auth.models import BaseUserManager
+
+
+
 
 '''
 ** There are three ways to create a user
@@ -28,11 +33,12 @@ products.objects.all() ==> objects : ( Inherits model Manager from django )
 اي انها يمكن بناء اكثر من طريقة بعد الانتهاء من الاوله يتم تنفيذ الثانية و ثم الثالثة )
 
 '''
+
+
 class CustomUserManager(BaseUserManager):
   def create_user(self,email,password=None,**extra_fields):
     if not email :
       raise ValueError('The Email Field is Required')
-
     email = self.normalize_email(email)
     user = self.model(email=email , **extra_fields)
     user.set_password(password)
@@ -42,7 +48,9 @@ class CustomUserManager(BaseUserManager):
   def create_superuser(self,email,password=None,**extra_fields):
     extra_fields.setdefault('is_staff',True)
     extra_fields.setdefault('is_superuser',True)
-    return self.create_user(email,password,**extra_fields)
+    if password:
+     extra_fields['password'] = make_password(password)  # hash password : encry
+     return self.create_user(email,password,**extra_fields)
 
 
 

@@ -12,6 +12,8 @@ from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_decode
 from django.utils.encoding import force_bytes
 from django.contrib.auth.tokens import default_token_generator
+from .serializers import UserSerializer
+
 
 User = get_user_model()  # CustomsUser 
 
@@ -107,7 +109,30 @@ class PasswordResetAPI(APIView):
 
 
 class UserSignupAPI(APIView):
-  pass
+  def post(self,request,*args, **kwargs):
+    serializer = UserSerializer(data=request.data)
+    if serializer.is_valid():
+      user =serializer.save()
+      user.is_active = False
+      user.save()
+
+      # create activation link 
+      current_site = get_current_site(request)   #get domain : url 
+      mail_subject = 'Activate Your Account'
+      message = render_to_string('accounts/activation_email.html',{
+        'user' : user ,
+        'domain' : current_site.domain ,
+        'uid' : urlsafe_base64_decode(force_bytes(user.id)) ,
+        'token' : default_token_generator.make_token(user)
+
+      })
+      to_email = user.email
+      send_mail(mail_subject,message,'saber.mharsh@gmail.com',[to_email])
+      return Response({'success':'User registered successfuly , plase check your email to activate your account '}, status=status.HTTP_201_CREATED)
+    return Response({'error':serializer.errors},status=status.HTTP_400_BAD_REQUEST)
 
 class UserProfile(APIView):
-  pass
+  def get(self,request,*args, **kwargs):
+    user = request.user
+    serializer = UserSerializer(user)
+    return Response(serializer.data , status=status.HTTP_200_OK)
