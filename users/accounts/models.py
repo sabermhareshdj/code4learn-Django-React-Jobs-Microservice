@@ -5,56 +5,29 @@ from django.contrib.auth.models import BaseUserManager
 
 
 
-
-'''
-** There are three ways to create a user
-   this is from django 5 information store in databaseDjango 
-              1- username   2- email  3 - password  4 - firstname   5 - lastname  ** and your are Admin or superUser .
-- ono-to-one   : -->  if you want add image or any think -- connect profile user django : one-to-one
-- abstractUser : fileds ---- > permission qroups auth views
-                Use an class , do not use it directly . craete many of class Employee or calss Manager 
-                (There are things in common between them) can use class Inherits from the this class without accessing it .
-                class User : abstract
-
-                class Employee(User):
-
-                class Manager(User):
-
-- abstractBaseUser : low level : Design everything according to system requirements. Freedom of design .
-______________________________________________________________________________________________________________
-what is manager :
-products.objects.all() ==> objects : ( Inherits model Manager from django )
-
-* When you study Django you build...
-  - Queryset : bulid custom ----> It is not okay to be (Chained) غير مقيد
-  - Model Manager : bulid custom ---> can Chained يمكن ان يكون مقيد
-    (مثال 
-    #products.objects.all().filter().orderby()
-اي انها يمكن بناء اكثر من طريقة بعد الانتهاء من الاوله يتم تنفيذ الثانية و ثم الثالثة )
-
-'''
-
-
 class CustomUserManager(BaseUserManager):
   def create_user(self,email,password=None,**extra_fields):
     if not email :
       raise ValueError('The Email Field is Required')
     email = self.normalize_email(email)
+    
     user = self.model(email=email , **extra_fields)
     user.set_password(password)
     user.save(using=self._db)
     return user
 
   def create_superuser(self,email,password=None,**extra_fields):
+    print('in createsuperuser ...')
     extra_fields.setdefault('is_staff',True)
     extra_fields.setdefault('is_superuser',True)
-    if password:
-     extra_fields['password'] = make_password(password)  # hash password : encry
-     return self.create_user(email,password,**extra_fields)
+    extra_fields.setdefault('is_active',True)
+
+    return self.create_user(email,password,**extra_fields)
 
 
 
-class CustomUser(AbstractUser,PermissionsMixin):
+class CustomUser(AbstractUser):
+  username = None
   email = models.EmailField(unique=True) # login with email
   username = models.CharField(max_length=25 , null=True , blank=True) # It is best that the name be added and be unique
   is_active = models.BooleanField(default=False)

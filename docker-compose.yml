@@ -31,19 +31,19 @@ services:
       - JOB_DB_PASSWORD=postgres
       - JOB_DB_HOST=jobsDB
 
-#  blog:
-#    build: ./blog
-#    command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8003"
-#    ports:
-#      - "8003:8003"
-#    container_name: BlogAPI
-#    volumes:
-#      - ./blog:/app
-#    environment:
-#      - BLOG_DB_NAME=blog
-#      - BLOG_DB_USER=postgres
-#      - BLOG_DB_PASSWORD=postgres
-#      - BLOG_DB_HOST=blogDB
+  blog:
+    build: ./blog
+    command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8003"
+    ports:
+      - "8003:8003"
+    container_name: BlogAPI
+    volumes:
+      - ./blog:/app
+    environment:
+      - BLOG_DB_NAME=blog
+      - BLOG_DB_USER=postgres
+      - BLOG_DB_PASSWORD=postgres
+      - BLOG_DB_HOST=blogDB
 
   # DataBase
   usersDB:
@@ -64,16 +64,16 @@ services:
     volumes:
       - jobs_data:/var/lib/postgresql/data/
 
-#  blogDB:
-#    image: postgres:15
-#    environment:
-#      - POSTGRES_DB=blog
-#      - POSTGRES_USER=postgres
-#      - POSTGRES_PASSWORD=postgres
-#    volumes:
-#      - blog_data:/var/lib/postgresql/data/
+  blogDB:
+    image: postgres:15
+    environment:
+      - POSTGRES_DB=blog
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - blog_data:/var/lib/postgresql/data/
 
 volumes:
-#  blog_data:
+  blog_data:
   jobs_data:
   user_data:

@@ -91,6 +91,8 @@ class PasswordResetAPI(APIView):
         user = User.objects.get(email=email)
       except User.DoesNotExist:
         return Response({'error':'User with this email does not exist'},status=status.HTTP_404_NOT_FOUND)
+      if user.is_active:
+        return Response({'error':'this user is already activate '},status=status.HTTP_400_BAD_REQUEST)
 
       # create activation link 
       current_site = get_current_site(request)   #get domain : url 
