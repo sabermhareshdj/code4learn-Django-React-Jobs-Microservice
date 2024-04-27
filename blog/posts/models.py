@@ -11,10 +11,10 @@ class Post(models.Model):
   #likes = models.ManyToManyField(User) ==> لااستطيع عمل جدول كون اليوزر في مكان اخر 
 
   def total_likes(self):
-    return PostLikes.objects.filter(post=self).count
+    return PostLikes.objects.filter(post=self).count()
 
   def total_comments(self):
-    return Comment.objects.filter(post=self).count
+    return Comment.objects.filter(post=self).count()
   def __str__(self):
     return self.title
 
