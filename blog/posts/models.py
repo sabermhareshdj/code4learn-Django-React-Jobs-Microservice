@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 
+
 class Post(models.Model):
   author_id = models.IntegerField()
   title = models.CharField(max_length=100)
@@ -15,8 +16,11 @@ class Post(models.Model):
 
   def total_comments(self):
     return Comment.objects.filter(post=self).count()
+  
+
   def __str__(self):
     return self.title
+
 
 class PostLikes(models.Model):
   post = models.ForeignKey(Post,related_name='post_likes',on_delete=models.CASCADE)
@@ -24,6 +28,7 @@ class PostLikes(models.Model):
 
   def __str__(self):
     return str(self.post)
+  
 
 class Comment(models.Model):
   user_id = models.IntegerField()

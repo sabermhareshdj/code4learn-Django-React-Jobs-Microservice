@@ -30,6 +30,8 @@ services:
       - JOB_DB_USER=postgres
       - JOB_DB_PASSWORD=postgres
       - JOB_DB_HOST=jobsDB
+    depends_on:
+      - jobsDB
 
   blog:
     build: ./blog
@@ -44,6 +46,8 @@ services:
       - BLOG_DB_USER=postgres
       - BLOG_DB_PASSWORD=postgres
       - BLOG_DB_HOST=blogDB
+    depends_on:
+      - blogDB
 
   # DataBase
   usersDB:

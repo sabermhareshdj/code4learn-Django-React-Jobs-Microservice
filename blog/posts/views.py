@@ -33,7 +33,7 @@ class LikeCreateAPI(generics.CreateAPIView):
     user_id = self.request.data.get('user_id')
 
     try:
-      post = Post.objects.get(id=post_id)
+      post = PostLikes.objects.get(id=post_id)
       serializer.save(post=post,user_id=user_id)
       return Response({'message':'like  was added successuly'},status=status.HTTP_201_CREATED)
     
