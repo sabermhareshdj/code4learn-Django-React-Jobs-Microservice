@@ -2,10 +2,12 @@ from rest_framework import generics , status
 from rest_framework.response import Response
 from .models import Post , PostLikes , Comment
 from .serializers import PostLikesSerializers , PostSerializers , CommentSerializers
+from .pagination import PostPagination
 
 class PostListAPI(generics.ListAPIView):
   queryset = Post.objects.all()
   serializer_class = PostSerializers
+  pagination_class = PostPagination
 
 class PostDetailAPI(generics.RetrieveAPIView):
   queryset = Post.objects.all()
